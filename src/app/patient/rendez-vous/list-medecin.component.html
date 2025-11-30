@@ -1,0 +1,48 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1>👨‍⚕️ Choisir votre médecin</h1>
+    <p>Vue d'ensemble des médecins et spécialités</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="doctors-list">
+
+    <ng-container *ngFor="let m of medecins">
+      <div class="doctor-card"  *ngIf="m.role === 'medecin'">
+        <div class="doctor-header">
+          <div class="doctor-avatar">MD</div>
+          <div class="doctor-identity">
+            <h3>Dr. {{m.prenom}} {{m.nom}}</h3>
+            <span class="specialite-badge">🩺 {{m.specialite!.libelle}}</span>
+          </div>
+          <span class="status-badge status-available">Disponible</span>
+        </div>
+
+        <div class="doctor-info">
+          <div class="info-row">
+            <span class="info-icon">🩺</span>
+            <span class="info-text">{{m.specialite!.libelle}}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-icon">📧</span>
+            <span class="info-text">{{m.email}}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-icon">📱</span>
+            <span class="info-text">{{m.telephone}}</span>
+          </div>
+        </div>
+
+        <div class="doctor-footer">
+          <button routerLink="/patient/add-rendez-vous/{{m.id}}" class="appointment-btn">
+            📅 Prendre RDV
+          </button>
+        </div>
+      </div>
+    </ng-container>
+
+
+  </div>
+</div>

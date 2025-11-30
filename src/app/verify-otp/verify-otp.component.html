@@ -1,0 +1,50 @@
+<div class="otp-container">
+  <div class="otp-card">
+    <div class="card-header">
+      <div class="icon-box">
+        <span class="icon">📧</span>
+      </div>
+      <h2>Vérification</h2>
+      <p>Entrez le code à 6 chiffres envoyé à<br><strong>votreemail.com</strong></p>
+    </div>
+
+    <form class="otp-form">
+      <div class="otp-inputs">
+        <input type="text" maxlength="1" class="otp-input" pattern="[0-9]" required>
+        <input type="text" maxlength="1" class="otp-input" pattern="[0-9]" required>
+        <input type="text" maxlength="1" class="otp-input" pattern="[0-9]" required>
+        <input type="text" maxlength="1" class="otp-input" pattern="[0-9]" required>
+        <input type="text" maxlength="1" class="otp-input" pattern="[0-9]" required>
+        <input type="text" maxlength="1" class="otp-input" pattern="[0-9]" required>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        Vérifier le code
+      </button>
+
+      <div class="resend-section">
+        <p>Vous n'avez pas reçu le code ?</p>
+        <button type="button" class="btn-resend">Renvoyer le code</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!--<script>-->
+<!--  // Auto-focus sur le champ suivant-->
+<!--  const inputs = document.querySelectorAll('.otp-input');-->
+<!--  inputs.forEach((input, index) => {-->
+<!--    input.addEventListener('input', (e) => {-->
+<!--      if (e.target.value.length === 1 && index < inputs.length - 1) {-->
+<!--        inputs[index + 1].focus();-->
+<!--      }-->
+<!--    });-->
+
+<!--    input.addEventListener('keydown', (e) => {-->
+<!--      if (e.key === 'Backspace' && e.target.value === '' && index > 0) {-->
+<!--        inputs[index - 1].focus();-->
+<!--      }-->
+<!--    });-->
+<!--  });-->
+<!--</script>-->

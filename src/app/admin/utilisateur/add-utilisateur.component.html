@@ -1,0 +1,155 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1>➕ Ajouter un utilisateur</h1>
+    <p>Créez un nouveau compte utilisateur dans le système</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="form-container">
+    <form class="add-user-form" [formGroup]="formUtilisateur" (ngSubmit)="onSubmit()">
+
+      <!-- Section 1: Type d'utilisateur -->
+      <div class="form-section">
+        <div class="section-header">
+          <h3>👤 Type d'utilisateur</h3>
+          <p class="section-subtitle">Sélectionnez le rôle de l'utilisateur</p>
+        </div>
+
+        <div class="role-selector">
+          <label class="role-option">
+            <input type="radio" name="role" value="admin" (change)="onRoleChange('admin')"
+                   [checked]="selectedRole === 'admin'">
+            <div class="role-card">
+              <div class="role-icon admin-icon">🔧</div>
+              <h4>Administrateur</h4>
+              <p>Accès complet au système</p>
+            </div>
+          </label>
+
+          <label class="role-option">
+            <input type="radio" name="role" value="medecin" (change)="onRoleChange('medecin')"
+                   [checked]="selectedRole === 'medecin'">
+            <div class="role-card">
+              <div class="role-icon medecin-icon">👨‍⚕</div>
+              <h4>Médecin</h4>
+              <p>Gestion des consultations</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Section 2: Informations personnelles -->
+      <div class="form-section">
+        <div class="section-header">
+          <h3>📝 Informations personnelles</h3>
+          <p class="section-subtitle">Renseignez les informations de base</p>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>
+              <span class="label-icon">👤</span>
+              Prénom
+              <span class="required">*</span>
+            </label>
+            <input type="text" placeholder="Ex: Mamadou" formControlName="prenom">
+            <div *ngIf="submitted && f2['prenom'].errors">
+              <span class="text-danger" *ngIf="f2['prenom'].errors['required']">Obligatoire</span>
+              <span class="text-danger" *ngIf="f2['prenom'].errors['maxlength']">maximum 255 caracteres</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <span class="label-icon">👤</span>
+              Nom
+              <span class="required">*</span>
+            </label>
+            <input type="text" placeholder="Ex: Diallo" formControlName="nom">
+            <div *ngIf="submitted && f2['nom'].errors">
+              <span class="text-danger" *ngIf="f2['nom'].errors['required']">Obligatoire</span>
+              <span class="text-danger" *ngIf="f2['nom'].errors['maxlength']">maximum 255 caracteres</span>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label>
+              <span class="label-icon">📧</span>
+              Email
+              <span class="required">*</span>
+            </label>
+            <input type="email" placeholder="exemple@email.com" formControlName="email">
+            <div *ngIf="submitted && f2['email'].errors">
+              <span class="text-danger" *ngIf="f2['email'].errors['required']">obligatoire</span>
+              <span class="text-danger" *ngIf="f2['email'].errors['email']">invalide</span>
+            </div>
+            <div *ngIf="emailError">
+              <small class="text-danger">{{ emailError }}</small>
+            </div>
+          </div>
+
+          <div class="form-group full-width" *ngIf="selectedRole === 'medecin'">
+            <label>
+              <span class="label-icon">📱</span>
+              Téléphone
+              <span class="required">*</span>
+            </label>
+            <input type="tel" placeholder="+221 77 123 45 67" formControlName="telephone">
+            <div *ngIf="submitted && f2['telephone'].errors">
+              <span class="text-danger" *ngIf="f2['telephone'].errors['required']">obligatoire</span>
+              <span class="text-danger" *ngIf="f2['telephone'].errors['minlength']">minimum 8 caracteres</span>
+              <span class="text-danger" *ngIf="f2['telephone'].errors['maxlength']">maximum 20 caracteres</span>
+            </div>
+          </div>
+
+          <div class="form-group full-width" *ngIf="selectedRole === 'medecin'">
+            <label>
+              <span class="label-icon">📱</span>
+              Spécialité
+              <span class="required">*</span>
+            </label>
+            <select formControlName="specialite_id">
+              <option value="">Sélectionner...</option>
+              <option value="{{s.id}}" *ngFor="let s of specialites">{{ s.libelle }}</option>
+            </select>
+            <div *ngIf="submitted && f2['specialite_id'].errors">
+              <span class="text-danger" *ngIf="f2['specialite_id'].errors['required']">obligatoire</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Note informative -->
+      <div class="form-info">
+        <div class="info-icon">💡</div>
+        <div class="info-content">
+          <p>Les champs marqués d'une étoile (<span class="required">*</span>) sont obligatoires.</p>
+        </div>
+      </div>
+
+      <!-- Note téléphone (en vert) -->
+      <div class="form-info-phone" *ngIf="selectedRole === 'medecin'">
+        <div class="info-icon">📱</div>
+        <div class="info-content">
+          <p>Le numéro de téléphone doit commencer par <strong>77</strong>, <strong>78</strong>, <strong>76</strong> ou
+            <strong>70</strong> et ne doit comporter que <strong>9</strong> chiffres</p>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-action btn-cancel" routerLink="/admin/utilisateur">
+          <span>✕</span>
+          Annuler
+        </button>
+        <button type="submit" class="btn-action btn-submit">
+          <span>✓</span>
+          {{ this.id ? 'Modifier l\'utilisateur' : 'Créer l\'utilisateur' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1>📋 Mes Documents Médicaux</h1>
+    <h6>📁{{ dossierMedical.libelle }} - {{ dossierMedical.matricule }}</h6>
+  </div>
+
+  <!-- Carte Médecin + Documents (fusionnés) -->
+  <div class="doctor-documents-card">
+    <!-- Section Médecin -->
+    <div class="doctor-header">
+      <div class="doctor-avatar">👨‍⚕️</div>
+      <div class="doctor-details">
+        <h2 class="doctor-name">Dr. {{ dossierMedical.medecin?.prenom }} {{ dossierMedical.medecin?.nom }}</h2>
+        <p class="doctor-specialty">{{ dossierMedical.medecin?.specialite?.libelle }}</p>
+        <p class="doctor-id">
+          <span class="id-badge">{{ dossierMedical.medecin?.matricule }}</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Séparateur -->
+    <div class="divider"></div>
+
+    <!-- Filtres -->
+    <div class="filters-bar">
+      <button class="filter-btn active">Tous (12)</button>
+      <button class="filter-btn">Ordonnances (5)</button>
+      <button class="filter-btn">Analyses (4)</button>
+      <button class="filter-btn">Radiographies (2)</button>
+      <button class="filter-btn">Autres (1)</button>
+    </div>
+
+    <!-- Liste des documents -->
+    <div class="documents-list">
+
+      <!-- Document 1 -->
+      <div class="document-card" *ngFor="let d of documentMedicals">
+        <div class="doc-icon">📄</div>
+        <div class="doc-info">
+          <h3 class="doc-title">{{ d.titre }}</h3>
+          <div class="doc-meta">
+            <span class="meta-item">
+              <span class="icon">👨‍⚕️</span>
+              <strong>{{ dossierMedical.medecin?.prenom }} {{ dossierMedical.medecin?.nom }}</strong>
+            </span>
+            <span class="meta-item">
+              <span class="icon">📅</span>
+              {{ d.created_at | date:'dd MMM yyyy' }}
+            </span>
+            <span class="meta-item">
+              <span class="icon">📎</span>
+              PDF - {{ d.taille_formattee }}
+            </span>
+          </div>
+          <p class="doc-description">
+            {{ d.description }}
+          </p>
+          <div class="doc-tags">
+            <span *ngIf="d.type == 'Analyse' " class="tag tag-blue">{{ d.type }}</span>
+            <span *ngIf="d.type == 'Ordonnance' " class="tag tag-purple">{{ d.type }}</span>
+            <span *ngIf="d.type == 'Radiographie' " class="tag tag-orange">{{ d.type }}</span>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <button class="action-btn primary" (click)="viewDocument(d.cheminFichier!)">👁️ Voir</button>
+          <button class="action-btn">📤 Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

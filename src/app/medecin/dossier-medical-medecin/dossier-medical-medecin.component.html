@@ -1,0 +1,130 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1>📂 Mes Dossiers Médicaux</h1>
+    <p>Consultez et gérez tous vos dossiers médicaux</p>
+  </div>
+
+  <!-- Section Dossiers Médicaux -->
+  <div class="folders-section">
+    <div class="section-header">
+      <div class="header-left">
+        <h2>📂 Dossiers Médicaux</h2>
+        <span class="folder-count">{{dossierMedicals.length}} dossier(s)</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline">🔍 Rechercher</button>
+        <button class="btn btn-primary" (click)="openModal()">➕ Nouveau dossier</button>
+      </div>
+    </div>
+
+    <!-- Grille des dossiers -->
+    <div class="folders-grid">
+
+      <!-- Dossier 1 -->
+      <div class="folder-card" *ngFor="let d of dossierMedicals">
+        <div class="folder-header">
+          <div class="folder-icon">📁</div>
+          <div class="folder-status status-active">{{ d.created_at | date:'dd MMM yyyy' }}</div>
+        </div>
+        <h3 class="folder-title">{{ d.libelle }}</h3>
+        <p class="folder-description">{{ d.description }}</p>
+
+        <div class="folder-info">
+          <div class="info-row">
+            <span class="info-label">🧍 Patient</span>
+            <span class="info-value">{{ d.patient?.prenom }} {{ d.patient?.nom }} - {{ d.patient?.matricule }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">🔢 Matricule</span>
+            <span class="info-value">{{ d.matricule }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">📄 Documents</span>
+            <span class="info-value">12 fichiers</span>
+          </div>
+        </div>
+
+        <div class="folder-actions">
+          <button class="folder-btn primary" routerLink="/medecin/dossier-medical/{{d.id}}">👁️ Consulter</button>
+          <button class="folder-btn delete">🗑️ Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL ÉLÉGANT ET 100% RESPONSIVE -->
+<div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-elegant" (click)="$event.stopPropagation()">
+
+    <!-- Header du modal (FIXE) -->
+    <div class="modal-header-elegant">
+      <div class="modal-icon-wrapper">
+        <span class="modal-icon-elegant">📁</span>
+      </div>
+      <h2 class="modal-title-elegant">Ajouter un dossier médical</h2>
+      <p class="modal-description">Renseigner le formulaire</p>
+      <button class="close-btn-elegant" (click)="closeModal()">×</button>
+    </div>
+
+    <!-- Formulaire -->
+    <form [formGroup]="formDossierMedical" (ngSubmit)="onSubmit()">
+
+      <!-- Corps du modal avec SCROLL -->
+      <div class="modal-body-elegant">
+
+        <!-- Patient -->
+        <div class="form-group-elegant">
+          <label class="label-elegant">
+            <span class="label-icon">🧍</span> Patient <span class="required">*</span>
+          </label>
+          <div class="select-wrapper">
+            <select class="select-elegant" formControlName="patient_id">
+              <option value="">Sélectionner...</option>
+              <option value="{{p.id}}" *ngFor="let p of patients">{{ p.prenom }} {{ p.nom }}</option>
+            </select>
+          </div>
+          <div class="error-message" *ngIf="submitted && f2['patient_id'].errors?.['required']">
+            Champ obligatoire
+          </div>
+        </div>
+
+        <!-- Libelle -->
+        <div class="form-group-elegant">
+          <label class="label-elegant">
+            <span class="label-icon">📝</span> Libellé <span class="required">*</span>
+          </label>
+          <input type="text" class="input-elegant" placeholder="Ajouter un libellé" formControlName="libelle"/>
+          <div class="error-message" *ngIf="submitted && f2['libelle'].errors?.['required']">
+            Champ obligatoire
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group-elegant">
+          <label class="label-elegant">
+            <span class="label-icon">📄</span> Description <span class="required">*</span>
+          </label>
+          <input type="text" class="input-elegant" placeholder="Ajouter une description" formControlName="description"/>
+          <div class="error-message" *ngIf="submitted && f2['description'].errors?.['required']">
+            Champ obligatoire
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer du modal (FIXE) -->
+      <div class="modal-footer-elegant">
+        <button type="button" class="btn-elegant btn-cancel-elegant" (click)="closeModal()">
+          ✕ Annuler
+        </button>
+        <button type="submit" class="btn-elegant btn-save-elegant">
+          ✓ Enregistrer
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>

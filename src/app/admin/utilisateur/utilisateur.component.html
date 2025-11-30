@@ -1,0 +1,85 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1>👥 Gestion des Utilisateurs</h1>
+    <p>Gérez tous les utilisateurs de votre plateforme</p>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Bouton d'ajout flottant -->
+  <button class="btn-add" routerLink="/admin/add-utilisateur">
+    <span>➕</span>
+    Ajouter un utilisateur
+  </button>
+
+  <!-- Filtres par rôle -->
+  <div class="filters-section">
+    <div class="filter-tabs">
+      <button class="filter-tab active">
+        <span>👥</span> Tous (24)
+      </button>
+      <button class="filter-tab">
+        <span>👨‍⚕️</span> Médecins (8)
+      </button>
+      <button class="filter-tab">
+        <span>🧍‍♂️</span> Patients (14)
+      </button>
+      <button class="filter-tab">
+        <span>🔧</span> Admins (2)
+      </button>
+    </div>
+
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Rechercher par nom, email, téléphone...">
+    </div>
+  </div>
+
+  <div class="users-list">
+
+    <div class="user-card" *ngFor="let u of utilisateurs">
+      <div class="user-info-row">
+        <div class="user-main-info">
+          <div class="user-avatar {{u.role == 'admin' ? 'admin' : u.role == 'medecin' ? 'medecin' : 'patient'}}">
+            {{ u.prenom[0] }}{{ u.nom[0] }}
+          </div>
+          <div class="user-details">
+            <h3>{{ u.prenom }} {{ u.nom }}</h3>
+            <div class="user-meta">
+              <span class="meta-item email">📧 {{ u.email }}</span>
+              <span *ngIf="u.role != 'admin'" class="meta-item phone">📱 {{ u.telephone }}</span>
+              <span *ngIf="u.role == 'patient'">🎂 {{ getAge(u.dateNaissance!) }} ans</span>
+              <span *ngIf="u.role == 'patient'">📍 {{ u.adresse }}</span>
+              <span *ngIf="u.role == 'patient'">👤 {{ u.genre }}</span>
+              <span *ngIf="u.role == 'medecin'">⚕️ {{ u.specialite?.libelle }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="user-actions">
+          <span *ngIf="u.role == 'admin'" class="role-badge role-admin">🔧 Admin</span>
+          <span *ngIf="u.role == 'patient'" class="role-badge role-patient">👤 Patient</span>
+          <span *ngIf="u.role == 'medecin'" class="role-badge role-medecin">👨‍⚕️️ Médecin</span>
+
+          <div class="action-buttons">
+            <button *ngIf="u.role != 'patient'" class="action-btn btn-edit"
+                    routerLink="/admin/update-utilisateur/{{u.id}}">
+              ✏️ Modifier
+            </button>
+            <button class="action-btn btn-delete" (click)="deleteSpecialite(u.id!)">
+              🗑️ Supprimer
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer pour le matricule -->
+      <div class="user-footer">
+        <span class="matricule-badge">🆔 {{ u.matricule }}</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,150 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(33, 150, 243, 0.3);
+}
+
+.header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.container {
+  width: 100%;
+  padding: 0 20px; /* optionnel si tu veux respirer un peu */
+  box-sizing: border-box;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chat-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.chat-message .avatar {
+  font-size: 22px;
+}
+
+.ai-message .message-content {
+  background: #eef5ff;
+  color: #1e3a8a;
+  padding: 10px 14px;
+  border-radius: 12px;
+  max-width: 70%;
+}
+
+.user-message {
+  flex-direction: row-reverse;
+}
+
+.user-message .message-content {
+  background: #2196F3;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 12px;
+  max-width: 70%;
+}
+
+.chat-input-area {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background: #fafafa;
+}
+
+.chat-input {
+  flex: 1;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  outline: none;
+  background: #f3f4f6;
+}
+
+.send-btn {
+  margin-left: 8px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0 16px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.welcome-container {
+  text-align: center;
+  margin: 40px auto;
+  padding: 20px;
+  max-width: 600px;
+}
+
+.welcome-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.welcome-logo {
+  width: 40px;
+  height: 40px;
+}
+
+.welcome-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: #222;
+}
+
+.welcome-subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 8px;
+}
+

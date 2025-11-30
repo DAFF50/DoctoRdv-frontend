@@ -1,0 +1,220 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1>📅 Prendre Rendez-vous</h1>
+    <p>Réservez votre consultation en quelques clics</p>
+  </div>
+
+  <!-- Grille principale -->
+  <div class="booking-container">
+
+    <!-- Carte Informations du médecin - GAUCHE -->
+    <div class="doctor-card">
+      <div class="doctor-header">
+        <div class="doctor-avatar">
+          DR
+        </div>
+        <div class="doctor-details">
+          <h2>Dr. {{ medecin?.prenom }} {{ medecin?.nom }}</h2>
+          <p class="doctor-specialty">🩺 {{ medecin?.specialite?.libelle }}</p>
+          <div class="doctor-rating">
+          </div>
+        </div>
+      </div>
+
+      <!-- Horaires -->
+      <div class="info-section">
+        <h3>🕐 Horaires de consultation</h3>
+        <div class="schedule-list">
+          <div *ngFor="let jour of joursOrdonnes" class="schedule-item" [class.closed]="isJourFerme(jour)">
+            <span class="day">{{ jour }}</span>
+            <span class="hours">{{ formatHorairesJour(jour) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarifs -->
+      <div class="info-section pricing-section">
+        <h3>💰 Tarif de consultation</h3>
+        <div class="price-card">
+          <div class="price-amount">{{ medecin?.specialite?.tarif | number:'1.0-0' }} FCFA</div>
+          <p class="price-note">Paiement en ligne ou au cabinet</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulaire de réservation - DROITE -->
+    <div class="booking-form">
+      <form [formGroup]="formRendezVous" (ngSubmit)="onSubmit()">
+
+        <!-- Étape 1: Informations personnelles -->
+        <div class="form-section">
+          <div class="section-header">
+            <h3>👤 Informations personnelles</h3>
+            <p class="section-subtitle">vous pouvez modifier vos coordonnées dans profil</p>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Prénom <span class="required">*</span></label>
+              <input type="text" [value]="currentUser?.prenom || ''" disabled/>
+            </div>
+
+            <div class="form-group">
+              <label>Nom <span class="required">*</span></label>
+              <input type="text" [value]="currentUser?.nom || ''" disabled/>
+            </div>
+
+            <div class="form-group">
+              <label>Email <span class="required">*</span></label>
+              <input type="email" [value]="currentUser?.email || ''" disabled/>
+            </div>
+
+            <div class="form-group">
+              <label>Téléphone <span class="required">*</span></label>
+              <input type="tel" [value]="currentUser?.telephone || ''" disabled/>
+            </div>
+
+            <div class="form-group">
+              <label>Date de naissance <span class="required">*</span></label>
+              <input type="date" [value]="currentUser?.dateNaissance || ''" disabled/>
+            </div>
+
+            <div class="form-group">
+              <label>Genre <span class="required">*</span></label>
+              <select [value]="currentUser?.genre || ''" disabled>
+                <option value="">Sélectionner...</option>
+                <option value="Homme">Masculin</option>
+                <option value="Femme">Féminin</option>
+              </select>
+            </div>
+
+            <div class="form-group full-width">
+              <label>Motif de la consultation <span class="required">*</span></label>
+              <textarea formControlName="motif" placeholder="Décrivez brièvement la raison de votre consultation..." rows="4"></textarea>
+              <div *ngIf="submitted && f2['motif'].errors" class="error-message">
+                <span class="text-danger" *ngIf="f2['motif'].errors['required']">⚠️ Le motif de consultation est obligatoire</span>
+                <span class="text-danger" *ngIf="f2['motif'].errors['maxlength']">⚠️ Le motif ne doit pas dépasser 255 caractères</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Étape 2: Date et heure -->
+        <div class="form-section">
+          <div class="section-header">
+            <h3>📅 Choisir la date et l'heure</h3>
+            <p class="section-subtitle">Sélectionnez un créneau disponible</p>
+          </div>
+
+          <div class="datetime-container">
+            <div class="form-group">
+              <label>Date du rendez-vous <span class="required">*</span></label>
+              <input type="date" (change)="onDateChange($event)" formControlName="dateRdv"/>
+              <div *ngIf="submitted && f2['dateRdv'].errors" class="error-message">
+                <span class="text-danger" *ngIf="f2['dateRdv'].errors['required']">⚠️ Veuillez sélectionner une date</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Créneau horaire <span class="required">*</span></label>
+              <div class="time-slots">
+                <button *ngFor="let creneau of creneauxDisponibles"
+                        type="button"
+                        class="time-slot"
+                        [class.selected]="isCreneauSelected(creneau)"
+                        (click)="selectHeure(creneau)">
+                  {{ creneau }}
+                </button>
+              </div>
+
+              <!-- Messages d'information et d'erreur -->
+              <div class="time-slot-messages">
+                <div *ngIf="submitted && f2['heure'].errors" class="error-message">
+                  <span class="text-danger" *ngIf="f2['heure'].errors['required']">⚠️ Veuillez sélectionner un créneau horaire</span>
+                </div>
+                <p *ngIf="dateSelectionnee && creneauxDisponibles.length === 0" class="info-message warning">
+                  ℹ️ Aucun créneau disponible pour cette date
+                </p>
+                <p *ngIf="!dateSelectionnee" class="info-message">
+                  ℹ️ Veuillez d'abord sélectionner une date
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Étape 3: Mode de paiement -->
+        <div class="form-section">
+          <div class="section-header">
+            <h3>💳 Mode de paiement</h3>
+            <p class="section-subtitle">Choisissez votre méthode de paiement</p>
+          </div>
+
+          <div class="payment-options">
+            <label class="payment-option" [class.selected]="formRendezVous.get('modePaiement')?.value === 'en ligne'">
+              <input type="radio" formControlName="modePaiement" name="paymentMode" value="en ligne"/>
+              <div class="payment-icon">💳</div>
+              <div class="payment-details">
+                <h4>Paiement en ligne</h4>
+                <p>Carte bancaire, Mobile Money (Orange Money, Wave)</p>
+              </div>
+              <div class="payment-badge">Sécurisé</div>
+            </label>
+
+            <label class="payment-option" [class.selected]="formRendezVous.get('modePaiement')?.value === 'cabinet'">
+              <input type="radio" formControlName="modePaiement" name="paymentMode" value="cabinet"/>
+              <div class="payment-icon">💵</div>
+              <div class="payment-details">
+                <h4>Paiement au cabinet</h4>
+                <p>Réglez en espèces directement à la clinique</p>
+              </div>
+              <div class="payment-badge recommended">Recommandé</div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Résumé de la réservation -->
+        <div class="booking-summary">
+          <h4>📋 Résumé de votre rendez-vous</h4>
+          <div class="summary-content">
+            <div class="summary-item">
+              <span class="summary-label">Médecin :</span>
+              <span class="summary-value">Dr. {{ medecin?.prenom }} {{ medecin?.nom }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Spécialité :</span>
+              <span class="summary-value">{{ medecin?.specialite?.libelle }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Date :</span>
+              <span class="summary-value">{{ formRendezVous.get('dateRdv')?.value || 'Non sélectionnée' }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Heure :</span>
+              <span class="summary-value">{{ formRendezVous.get('heure')?.value || 'Non sélectionnée' }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Mode de paiement :</span>
+              <span class="summary-value">{{ formRendezVous.get('modePaiement')?.value === 'en ligne' ? 'En ligne' : 'Au cabinet' }}</span>
+            </div>
+            <div class="summary-item total">
+              <span class="summary-label">Total à payer :</span>
+              <span class="summary-value">{{ medecin?.specialite?.tarif | number:'1.0-0' }} FCFA</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button routerLink="/patient/list-medecin" type="button" class="btn btn-secondary">
+            ← Retour
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Confirmer le rendez-vous →
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

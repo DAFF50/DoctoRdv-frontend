@@ -1,0 +1,74 @@
+<!-- Liste des notifications -->
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>
+      🔔 Notifications
+    </h1>
+    <p>Réservez votre consultation médicale en quelques étapes</p>
+  </div>
+
+  <!-- Filtres -->
+  <div class="notifications-filter">
+    <button
+      class="filter-btn">Toutes (8)
+    </button>
+
+    <button class="filter-btn">
+      Rendez-vous (3)
+    </button>
+
+    <button class="filter-btn">
+      Paiements (2)
+    </button>
+    <button class="filter-btn">
+      Rappels (2)
+    </button>
+    <button class="filter-btn">
+      Système (1)
+    </button>
+  </div>
+
+  <!-- Liste des notifications -->
+  <div class="notifications-list">
+
+    <div *ngFor="let n of notifications"
+         class="notification"
+         [ngClass]="{
+          'appointment': n.type === 'rdv-confirme',
+          'payment': n.type === 'paiement',
+          'reminder': n.type === 'rappel',
+          'system': n.type === 'systeme',
+          'unread': !n.est_lu
+        }">
+
+      <!-- HEADER -->
+      <div class="notification-header">
+        <div class="notification-icon">{{ n.icon }}</div>
+
+        <div class="notification-content">
+          <div class="notification-title">{{ n.title }}</div>
+          <div class="notification-message">{{ n.message }}</div>
+
+          <!-- DETAILS affiché uniquement si non-null -->
+          <div class="notification-details" *ngIf="n.details">
+            <ng-container *ngIf="n.details as d">
+
+              <div *ngFor="let key of objectKeys(d)">
+                <strong>{{ key }}:</strong> {{ d[key] }}
+              </div>
+            </ng-container>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="notification-footer">
+        <span class="notification-time">{{ n.created_at | date:'short' }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+

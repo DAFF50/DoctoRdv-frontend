@@ -1,0 +1,372 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1>📋 Mes Documents Médicaux</h1>
+    <h6>📁{{dossierMedical.libelle}} - {{dossierMedical.matricule}}</h6>
+  </div>
+
+  <!-- Carte Médecin + Documents (fusionnés) -->
+  <div class="doctor-documents-card">
+    <!-- Section Médecin -->
+    <div class="doctor-header">
+      <div class="doctor-avatar">🧍</div>
+      <div class="doctor-details">
+        <h2 class="doctor-name">{{dossierMedical.patient?.prenom}} {{dossierMedical.patient?.nom}}</h2>
+        <p class="doctor-id">
+          <span class="id-badge">{{dossierMedical.patient?.matricule}}</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Séparateur -->
+    <div class="divider"></div>
+
+    <!-- Filtres -->
+    <div class="filters-bar">
+      <button class="filter-btn active">Tous (12)</button>
+      <button class="filter-btn">Ordonnances (5)</button>
+      <button class="filter-btn">Analyses (4)</button>
+      <button class="filter-btn">Radiographies (2)</button>
+      <button class="filter-btn">Autres (1)</button>
+    </div>
+
+    <!-- Liste des documents -->
+    <div class="documents-list">
+
+      <!-- Document 1 -->
+      <div class="document-card"  *ngFor="let d of documentMedicals">
+        <div class="doc-icon">📄</div>
+        <div class="doc-info">
+          <h3 class="doc-title">{{d.titre}}</h3>
+          <div class="doc-meta">
+            <span class="meta-item">
+              <span class="icon">👨‍⚕️</span>
+              <strong>{{dossierMedical.medecin?.prenom}} {{dossierMedical.medecin?.nom}}</strong>
+            </span>
+            <span class="meta-item">
+              <span class="icon">📅</span>
+              {{ d.created_at | date:'dd MMM yyyy' }}
+            </span>
+            <span class="meta-item">
+              <span class="icon">📎</span>
+              PDF - {{d.taille_formattee}}
+            </span>
+          </div>
+          <p class="doc-description">
+            {{d.description}}
+          </p>
+          <div class="doc-tags">
+            <span *ngIf="d.type == 'Analyse' " class="tag tag-blue">{{d.type}}</span>
+            <span *ngIf="d.type == 'Ordonnance' " class="tag tag-purple">{{d.type}}</span>
+            <span *ngIf="d.type == 'Radiographie' " class="tag tag-orange">{{d.type}}</span>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <button class="action-btn primary" (click)="viewDocument(d.cheminFichier!)">👁️ Voir</button>
+          <button class="action-btn">📤 Supprimer</button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<!-- Floating Button -->
+<button class="floating-btn" (click)="openModal()">
+  <i class='bx bx-plus'></i>
+  <span>Document</span>
+</button>
+
+<!-- MODAL ÉLÉGANT ET 100% RESPONSIVE -->
+<div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-elegant" (click)="$event.stopPropagation()">
+
+    <!-- Header du modal (FIXE) -->
+    <div class="modal-header-elegant">
+      <div class="modal-icon-wrapper">
+        <span class="modal-icon-elegant">📋</span>
+      </div>
+      <h2 class="modal-title-elegant">Ajouter un document médical</h2>
+      <p class="modal-description">Renseigner le formulaire</p>
+      <button class="close-btn-elegant" (click)="closeModal()">×</button>
+    </div>
+
+    <!-- Formulaire -->
+    <form [formGroup]="formDocumentMedical" (ngSubmit)="onSubmit()">
+
+      <!-- Corps du modal avec SCROLL -->
+      <div class="modal-body-elegant">
+        <!-- Titre -->
+        <div class="form-group-elegant">
+          <label class="label-elegant">
+            <span class="label-icon">📝</span> Titre <span class="required">*</span>
+          </label>
+          <input type="text" class="input-elegant" placeholder="Ajouter un titre" formControlName="titre"/>
+          <div class="error-message" *ngIf="submitted && f2['titre'].errors?.['required']">
+            Champ obligatoire
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group-elegant">
+          <label class="label-elegant">
+            <span class="label-icon">📄</span> Description <span class="required">*</span>
+          </label>
+          <input type="text" class="input-elegant" placeholder="Ajouter une description" formControlName="description"/>
+          <div class="error-message" *ngIf="submitted && f2['description'].errors?.['required']">
+            Champ obligatoire
+          </div>
+        </div>
+
+        <!-- Type -->
+        <div class="form-group-elegant">
+          <label class="label-elegant">
+            <span class="label-icon">🔖</span> Type <span class="required">*</span>
+          </label>
+          <div class="select-wrapper">
+            <select class="select-elegant" formControlName="type">
+              <option value="">Sélectionner...</option>
+              <option value="Analyse" >Analyse</option>
+              <option value="Analyse" >Ordonnance</option>
+              <option value="Analyse" >Radiographie</option>
+            </select>
+          </div>
+          <div class="error-message" *ngIf="submitted && f2['type'].errors?.['required']">
+            Champ obligatoire
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer du modal (FIXE) -->
+      <div class="modal-footer-elegant">
+        <button type="button" class="btn-elegant btn-cancel-elegant" (click)="closeModal()">
+          ✕ Annuler
+        </button>
+        <button type="submit" class="btn-elegant btn-save-elegant">
+          ➜ Continuer
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL 2 : UPLOAD FICHIER -->
+<div class="modal-backdrop" *ngIf="showModal2" (click)="closeModal2()">
+  <div class="modal-elegant" (click)="$event.stopPropagation()">
+
+    <div class="modal-header-elegant">
+      <div class="modal-icon-wrapper">
+        <span class="modal-icon-elegant">📎</span>
+      </div>
+      <h2 class="modal-title-elegant">Téléverser le fichier</h2>
+      <p class="modal-description">Importer le document associé</p>
+      <button class="close-btn-elegant" (click)="closeModal2()">×</button>
+    </div>
+
+    <div class="modal-body-elegant">
+      <div class="form-group-elegant">
+        <label class="label-elegant">
+          <span class="label-icon">📄</span> Fichier <span class="required">*</span>
+        </label>
+
+        <input
+          type="file"
+          class="input-elegant"
+          (change)="onFileSelected($event)"
+          accept=".pdf"
+        />
+
+        <div class="error-message" *ngIf="submittedFile && !selectedFile">
+          Veuillez sélectionner un fichier
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer-elegant">
+      <button type="button" class="btn-elegant btn-cancel-elegant" (click)="backToModal1()">
+        ← Retour
+      </button>
+
+      <button type="button" class="btn-elegant btn-save-elegant" (click)="submitFinal()">
+        ✔ Enregistrer
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<!--&lt;!&ndash; Document 2 &ndash;&gt;-->
+<!--<div class="document-card">-->
+<!--  <div class="doc-icon">📊</div>-->
+<!--  <div class="doc-info">-->
+<!--    <h3 class="doc-title">Résultats d'analyses - Bilan sanguin complet</h3>-->
+<!--    <div class="doc-meta">-->
+<!--            <span class="meta-item">-->
+<!--              <span class="icon">🏥</span>-->
+<!--              <strong>Laboratoire Central Dakar</strong>-->
+<!--            </span>-->
+<!--      <span class="meta-item">-->
+<!--              <span class="icon">📅</span>-->
+<!--              10 Octobre 2024-->
+<!--            </span>-->
+<!--      <span class="meta-item">-->
+<!--              <span class="icon">📎</span>-->
+<!--              PDF - 512 KB-->
+<!--            </span>-->
+<!--    </div>-->
+<!--    <p class="doc-description">-->
+<!--      Résultats complets du bilan sanguin : NFS, glycémie, cholestérol, triglycérides-->
+<!--    </p>-->
+<!--    <div class="doc-tags">-->
+<!--      <span class="tag tag-purple">Analyses</span>-->
+<!--      <span class="tag tag-green">Normal</span>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="doc-actions">-->
+<!--    <button class="action-btn primary">👁️ Voir</button>-->
+<!--    <button class="action-btn">📥 Télécharger</button>-->
+<!--    <button class="action-btn">📤 Partager</button>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Document 3 &ndash;&gt;-->
+<!--<div class="document-card">-->
+<!--  <div class="doc-icon">🩻</div>-->
+<!--  <div class="doc-info">-->
+<!--    <h3 class="doc-title">Radiographie thoracique</h3>-->
+<!--    <div class="doc-meta">-->
+<!--            <span class="meta-item">-->
+<!--              <span class="icon">👨‍⚕️</span>-->
+<!--              <strong>Dr. Aïssatou Sow</strong>-->
+<!--            </span>-->
+<!--      <span class="meta-item">-->
+<!--              <span class="icon">📅</span>-->
+<!--              05 Octobre 2024-->
+<!--            </span>-->
+<!--      <span class="meta-item">-->
+<!--              <span class="icon">📎</span>-->
+<!--              JPEG - 1.2 MB-->
+<!--            </span>-->
+<!--    </div>-->
+<!--    <p class="doc-description">-->
+<!--      Radiographie du thorax de face et de profil pour contrôle respiratoire-->
+<!--    </p>-->
+<!--    <div class="doc-tags">-->
+<!--      <span class="tag tag-orange">Radiographie</span>-->
+<!--      <span class="tag tag-green">Rien à signaler</span>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="doc-actions">-->
+<!--    <button class="action-btn primary">👁️ Voir</button>-->
+<!--    <button class="action-btn">📥 Télécharger</button>-->
+<!--    <button class="action-btn">📤 Partager</button>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Document 4 &ndash;&gt;-->
+<!--<div class="document-card">-->
+<!--  <div class="doc-icon">📄</div>-->
+<!--  <div class="doc-info">-->
+<!--    <h3 class="doc-title">Certificat médical - Arrêt de travail</h3>-->
+<!--    <div class="doc-meta">-->
+<!--            <span class="meta-item">-->
+<!--              <span class="icon">👨‍⚕️</span>-->
+<!--              <strong>Dr. Mamadou Diallo</strong>-->
+<!--            </span>-->
+<!--      <span class="meta-item">-->
+<!--              <span class="icon">📅</span>-->
+<!--              28 Septembre 2024-->
+<!--            </span>-->
+<!--      <span class="meta-item">-->
+<!--              <span class="icon">📎</span>-->
+<!--              PDF - 180 KB-->
+<!--            </span>-->
+<!--    </div>-->
+<!--    <p class="doc-description">-->
+<!--      Certificat médical prescrivant un arrêt de travail de 5 jours pour grippe-->
+<!--    </p>-->
+<!--    <div class="doc-tags">-->
+<!--      <span class="tag tag-gray">Certificat</span>-->
+<!--      <span class="tag tag-red">Expiré</span>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="doc-actions">-->
+<!--    <button class="action-btn primary">👁️ Voir</button>-->
+<!--    <button class="action-btn">📥 Télécharger</button>-->
+<!--    <button class="action-btn">📤 Partager</button>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Document 5 &ndash;&gt;-->
+<!--<div class="document-card">-->
+<!--  <div class="doc-icon">📊</div>-->
+<!--  <div class="doc-info">-->
+<!--    <h3 class="doc-title">Test d'allergie cutané</h3>-->
+<!--    <div class="doc-meta">-->
+<!--            <span class="meta-item">-->
+<!--              <span class="icon">👨‍⚕️</span>-->
+<!--              <strong>Dr. Fatou Fall</strong>-->
+<!--            </span>-->
+<!--      <span class="meta-item">-->
+<!--              <span class="icon">📅</span>-->
+<!--              20 Septembre 2024-->
+<!--            </span>-->
+<!--      <span class="meta-item">-->
+<!--              <span class="icon">📎</span>-->
+<!--              PDF - 320 KB-->
+<!--            </span>-->
+<!--    </div>-->
+<!--    <p class="doc-description">-->
+<!--      Résultats des tests d'allergie : réaction positive à la pénicilline et aux arachides-->
+<!--    </p>-->
+<!--    <div class="doc-tags">-->
+<!--      <span class="tag tag-purple">Analyses</span>-->
+<!--      <span class="tag tag-yellow">Attention</span>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="doc-actions">-->
+<!--    <button class="action-btn primary">👁️ Voir</button>-->
+<!--    <button class="action-btn">📥 Télécharger</button>-->
+<!--    <button class="action-btn">📤 Partager</button>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Document 6 &ndash;&gt;-->
+<!--<div class="document-card">-->
+<!--  <div class="doc-icon">📄</div>-->
+<!--  <div class="doc-info">-->
+<!--    <h3 class="doc-title">Ordonnance - Antibiotiques</h3>-->
+<!--    <div class="doc-meta">-->
+<!--            <span class="meta-item">-->
+<!--              <span class="icon">👨‍⚕️</span>-->
+<!--              <strong>Dr. Ibrahima Ndiaye</strong>-->
+<!--            </span>-->
+<!--      <span class="meta-item">-->
+<!--              <span class="icon">📅</span>-->
+<!--              15 Septembre 2024-->
+<!--            </span>-->
+<!--      <span class="meta-item">-->
+<!--              <span class="icon">📎</span>-->
+<!--              PDF - 200 KB-->
+<!--            </span>-->
+<!--    </div>-->
+<!--    <p class="doc-description">-->
+<!--      Prescription d'antibiotiques (Amoxicilline) pour infection respiratoire-->
+<!--    </p>-->
+<!--    <div class="doc-tags">-->
+<!--      <span class="tag tag-blue">Ordonnance</span>-->
+<!--      <span class="tag tag-red">Terminé</span>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="doc-actions">-->
+<!--    <button class="action-btn primary">👁️ Voir</button>-->
+<!--    <button class="action-btn">📥 Télécharger</button>-->
+<!--    <button class="action-btn">📤 Partager</button>-->
+<!--  </div>-->
+<!--</div>-->
+
+

@@ -1,0 +1,95 @@
+<div class="container">
+  <div class="header">
+    <h1>🕐 Gestion des Plages Horaires</h1>
+    <p>Configurez vos disponibilités pour la semaine</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <h2>📅 Gestion des plages horaires</h2>
+      </div>
+      <button class="btn btn-primary" (click)="savePlages()">
+        💾 Enregistrer les modifications
+      </button>
+    </div>
+
+    <div class="schedule-grid">
+
+      <!-- BOUCLE SUR TOUS LES JOURS -->
+      <div class="day-schedule" *ngFor="let jour of jours">
+        <div class="day-header">
+          <h3>📅 {{ jour | titlecase }}</h3>
+        </div>
+
+        <!-- SI LE JOUR A DES PLAGES -->
+        <div class="time-slots" *ngIf="hasPlages(jour)">
+          <div class="time-slot"
+               *ngFor="let plage of plagesParJour[jour]; let i = index"
+               [class.disabled]="!plage.estActive">
+
+            <!-- Toggle activation -->
+            <div class="slot-toggle">
+              <label class="toggle-switch-small">
+                <input type="checkbox"
+                       [(ngModel)]="plage.estActive"
+                       (change)="togglePlage(jour, i)">
+                <span class="toggle-slider-small"
+                      [class.active]="plage.estActive"></span>
+              </label>
+            </div>
+
+            <!-- Heure début -->
+            <div class="time-input-group">
+              <label>Heure début</label>
+              <input type="time"
+                     [(ngModel)]="plage.heureDebut"
+                     [disabled]="!plage.estActive">
+            </div>
+
+            <!-- Heure fin -->
+            <div class="time-input-group">
+              <label>Heure fin</label>
+              <input type="time"
+                     [(ngModel)]="plage.heureFin"
+                     [disabled]="!plage.estActive">
+            </div>
+
+            <!-- Bouton supprimer -->
+            <button class="btn-icon btn-delete"
+                    (click)="deletePlage(jour, i, plage.id)">
+              🗑️
+            </button>
+          </div>
+        </div>
+
+        <!-- SI AUCUNE PLAGE POUR CE JOUR -->
+        <div class="empty-state" *ngIf="!hasPlages(jour)">
+          <div class="empty-icon">📭</div>
+          <h4>Aucune plage horaire</h4>
+          <p>Cliquez sur "Ajouter une plage" pour commencer</p>
+        </div>
+
+        <!-- BOUTON AJOUTER (max 2 plages) -->
+        <button class="btn btn-add-slot"
+                (click)="addPlage(jour)"
+                [disabled]="!canAddPlage(jour)">
+          ➕ Ajouter une plage
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer">
+      <button class="btn btn-secondary" (click)="cancel()">
+        ❌ Annuler
+      </button>
+      <button class="btn btn-primary" (click)="savePlages()">
+        💾 Enregistrer
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+<div class="layout">
+  <!-- ===== Sidebar ===== -->
+  <nav #sidebar class="sidebar" [class.close]="isSidebarClosed">
+    <header>
+      <div class="image-text">
+        <span class="image">
+          <!-- <img src="assets/images/DoctoRdv.png" alt=""> -->
+        </span>
+        <div class="text logo-text">
+          <span class="name">DoctoRdv</span>
+          <span class="profession">Mon Espace Santé</span>
+        </div>
+      </div>
+      <i class='bx bx-chevron-right toggle' (click)="toggleSidebar()"></i>
+    </header>
+
+    <div class="menu-bar">
+      <div class="menu">
+        <li class="search-box">
+          <i class='bx bx-search icon'></i>
+          <input type="text" placeholder="Rechercher...">
+        </li>
+
+        <li class="nav-link">
+          <a routerLink="/patient/dashboard">
+            <i class='bx bx-home-alt icon'></i>
+            <span class="text nav-text">Tableau de bord</span>
+          </a>
+        </li>
+
+        <li class="nav-link">
+          <a routerLink="/patient/rendez-vous">
+            <i class='bx bx-calendar-check icon'></i>
+            <span class="text nav-text">Rendez-vous</span>
+          </a>
+        </li>
+
+        <li class="nav-link">
+          <a routerLink="/patient/dossier-medical">
+            <i class='bx bx-folder icon'></i>
+            <span class="text nav-text">Dossier médical</span>
+          </a>
+        </li>
+
+        <li class="nav-link">
+          <a routerLink="">
+            <i class='bx bx-bell icon'></i>
+            <span class="text nav-text">Mes paiements</span>
+          </a>
+        </li>
+
+        <li class="nav-link">
+          <a routerLink="/patient/notifications">
+            <i class='bx bx-bell icon'></i>
+            <span class="text nav-text">Notifications</span>
+          </a>
+        </li>
+
+        <li class="nav-link">
+          <a routerLink="/patient/chat-ia">
+            <i class='bx bx-chat icon'></i>
+            <span class="text nav-text">Chatbot</span>
+          </a>
+        </li>
+
+        <li class="nav-link">
+          <a routerLink="/patient/profil">
+            <i class='bx bx-user-circle icon'></i>
+            <span class="text nav-text">Profil</span>
+          </a>
+        </li>
+      </div>
+
+      <div class="bottom-content">
+        <li>
+          <a (click)="onLogout()">
+            <i class='bx bx-log-out icon'></i>
+            <span class="text nav-text">Se déconnecter</span>
+          </a>
+        </li>
+
+        <li class="mode">
+          <div class="sun-moon">
+            <i class='bx bx-moon icon moon'></i>
+            <i class='bx bx-sun icon sun'></i>
+          </div>
+          <span class="mode-text text">Dark mode</span>
+          <div class="toggle-switch">
+            <span class="switch"></span>
+          </div>
+        </li>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== Contenu principal ===== -->
+  <section class="main-content">
+    <router-outlet></router-outlet>
+  </section>
+</div>

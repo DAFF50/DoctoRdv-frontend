@@ -1,0 +1,54 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1>📋 Mes Dossiers Médicaux</h1>
+    <p>Consultez tous vos dossiers médicaux</p>
+  </div>
+
+  <!-- Section Dossiers Médicaux -->
+  <div class="folders-section">
+    <div class="section-header">
+      <div class="header-left">
+        <h2>📂 Dossiers Médicaux</h2>
+        <span class="folder-count">{{dossierMedicals.length}} dossier(s)</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline">🔍 Rechercher</button>
+      </div>
+    </div>
+
+    <!-- Grille des dossiers -->
+    <div class="folders-grid">
+
+      <!-- Dossier 1 -->
+      <div class="folder-card" *ngFor="let d of dossierMedicals">
+        <div class="folder-header">
+          <div class="folder-icon">📁</div>
+          <div class="folder-status status-active">{{ d.created_at | date:'dd MMM yyyy' }}</div>
+        </div>
+        <h3 class="folder-title" [title]="d.libelle">{{ d.libelle }}</h3>
+        <p class="folder-description" [title]="d.description">{{ d.description }}</p>
+
+        <div class="folder-info">
+
+          <div class="info-row">
+            <span class="info-label">👨‍⚕️ Médecin</span>
+            <span class="info-value" [title]="d.medecin?.prenom + ' ' + d.medecin?.nom + ' - ' + d.medecin?.matricule">{{ d.medecin?.prenom }} {{ d.medecin?.nom }} - {{ d.medecin?.matricule }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">🔢 Matricule</span>
+            <span class="info-value" [title]="d.matricule">{{ d.matricule }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">📄 Documents</span>
+            <span class="info-value">12 fichiers</span>
+          </div>
+        </div>
+
+        <div class="folder-actions">
+          <button class="folder-btn primary" routerLink="/patient/document-patient/{{d.id}}">👁️ Consulter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

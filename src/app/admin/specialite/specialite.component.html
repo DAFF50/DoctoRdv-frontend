@@ -1,0 +1,114 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1>🏥 Gestion des Spécialités Médicales</h1>
+    <p>Gérez les spécialités disponibles dans votre plateforme</p>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Bouton d'ajout -->
+  <button class="btn-add" (click)="openModal()">
+    <span>➕</span>
+    Ajouter une spécialité
+  </button>
+
+  <!-- Liste des spécialités -->
+  <div class="specialties-list">
+    <div class="specialty-card" *ngFor="let s of specialites">
+      <div class="specialty-info-row">
+        <div class="specialty-main-info">
+          <div class="specialty-details">
+            <h3>{{ s.libelle }}</h3>
+            <div class="specialty-meta">
+              <span class="meta-item">ID: {{ s.id }}</span>
+              <span class="meta-item doctors-count">👨‍⚕️ 5 médecins</span>
+              <span class="meta-item doctors-count">💵 {{s.tarif}} FCFA</span>
+            </div>
+          </div>
+        </div>
+        <div class="specialty-actions">
+          <button class="action-btn btn-edit" (click)="openEditModal(s)">
+            <span>✏️</span>
+            Modifier
+          </button>
+          <button class="action-btn btn-delete" (click)="deleteSpecialite(s.id!)">
+            <span>🗑️</span>
+            Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL ÉLÉGANT ET COMPLET -->
+<div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-elegant" (click)="$event.stopPropagation()">
+
+    <!-- Header du modal avec icône -->
+    <div class="modal-header-elegant">
+      <div class="modal-icon-wrapper">
+        <span class="modal-icon-elegant">🏥</span>
+      </div>
+      <h2 class="modal-title-elegant">Ajouter une spécialité médicale</h2>
+      <p class="modal-description">Renseignez le libellé et le tarif de la nouvelle spécialité</p>
+      <button class="close-btn-elegant" (click)="closeModal()">×</button>
+    </div>
+
+    <form [formGroup]="formSpecialite" (ngSubmit)="onSubmit()">
+      <!-- Corps du modal -->
+      <div class="modal-body-elegant">
+        <div class="form-group-elegant">
+          <label class="label-elegant">
+            <span class="label-icon">📝</span>
+            Libellé de la spécialité
+            <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            class="input-elegant"
+            placeholder="Ex : Cardiologie, Dermatologie, Pédiatrie..."
+            formControlName="libelle"
+          />
+          <div *ngIf="submitted && f2['libelle'].errors">
+            <span class="text-danger" *ngIf="f2['libelle'].errors['required']" >Libellé est Obligatoire</span>
+          </div>
+        </div>
+        <div class="form-group-elegant">
+          <label class="label-elegant">
+            <span class="label-icon">📝</span>
+            Tarif de la spécialité
+            <span class="required">*</span>
+          </label>
+          <input
+            type="number"
+            class="input-elegant"
+            placeholder="Ex : 100 000"
+            formControlName="tarif"
+          />
+          <div *ngIf="submitted && f2['tarif'].errors">
+            <span class="text-danger" *ngIf="f2['tarif'].errors['required']" >tarif est Obligatoire</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer du modal -->
+      <div class="modal-footer-elegant">
+        <button type="button" class="btn-elegant btn-cancel-elegant" (click)="closeModal()">
+          <span class="btn-icon-elegant">✕</span>
+          <span class="btn-label">Annuler</span>
+        </button>
+
+        <button type="submit" class="btn-elegant btn-save-elegant">
+          <span class="btn-icon-elegant">✓</span>
+          <span class="btn-label">{{ id ? 'Modifier la spécialité' : 'Enregistrer la spécialité' }}</span>
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+

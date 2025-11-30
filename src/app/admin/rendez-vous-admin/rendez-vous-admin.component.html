@@ -1,0 +1,71 @@
+<!-- Wrapper principal du component rendez-vous -->
+<div class="rendez-vous-wrapper">
+  <!-- Header -->
+  <div class="header">
+    <h1>📅 Prendre Rendez-vous</h1>
+    <p>Réservez votre rendez-vous médicale en quelques étapes</p>
+  </div>
+
+  <!-- Appointments Container -->
+  <div class="appointments-container">
+    <div class="appointments-list" id="appointmentsList">
+      <div class="appointment-card" data-status="confirmed" *ngFor="let r of rendezVous">
+        <div class="appointment-header">
+          <div class="doctor-info">
+            <div class="doctor-avatar">
+              {{ r.medecin?.prenom!.charAt(0).toUpperCase() }}{{ r.medecin?.nom!.charAt(0).toUpperCase() }}
+            </div>
+            <div class="doctor-details">
+              <h3>Dr. {{ r.medecin?.prenom }} {{ r.medecin?.nom }}</h3>
+              <div class="doctor-specialty">{{ r.medecin?.specialite?.libelle }}</div>
+            </div>
+          </div>
+          <span class="appointment-status status-confirmed">{{ r.statut }}</span>
+        </div>
+
+        <div class="appointment-details">
+          <div class="detail-item">
+            <div class="detail-icon">📅</div>
+            <div class="detail-text">
+              <h4>Date</h4>
+              <p>{{ r.dateRdv }}</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-icon">🕐</div>
+            <div class="detail-text">
+              <h4>Heure</h4>
+              <p>{{ r.heure.substring(0, 5) }}</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-icon">💳</div>
+            <div class="detail-text">
+              <h4>Paiement</h4>
+              <p>{{ r.modePaiement }}</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-icon">💵</div>
+            <div class="detail-text">
+              <h4>Montant</h4>
+              <p>{{ r.medecin?.specialite?.tarif | number:'1.0-0' }} FCFA</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="appointment-actions">
+          <button class="btn btn-secondary">
+            📄 Télécharger PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Button -->
+  <button class="floating-btn" routerLink="/patient/list-medecin">
+    <i class='bx bx-plus'></i>
+    <span>Prendre rendez-vous</span>
+  </button>
+</div>
