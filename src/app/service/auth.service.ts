@@ -19,7 +19,7 @@ interface LoginResponse {
 export class AuthService {
 
   // 🌐 URL de l'API Laravel
-  private apiUrl = 'https://ton-service.onrender.com/api';
+  private apiUrl = 'https://doctordv-backend-latest.onrender.com/api';
 
   constructor(
     private http: HttpClient,

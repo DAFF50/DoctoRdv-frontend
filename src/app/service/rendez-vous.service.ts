@@ -10,7 +10,7 @@ export class RendezVousService {
 
   constructor(private httpClient: HttpClient, private authService: AuthService,) { }
 
-  URL = "https://ton-service.onrender.com/api/";
+  URL = "https://doctordv-backend-latest.onrender.com/api/";
 
   getRendezVousByPatient() {
     return this.httpClient.get<RendezVous[]>(this.URL+"rendez-vous-patient/" + this.authService.getCurrentUser()?.id);

@@ -8,7 +8,7 @@ import {PlageHoraire, PlagesParJour} from "../models/plage-horaire";
 })
 export class PlageHoraireService {
 
-  private apiUrl = 'https://ton-service.onrender.com/api';
+  private apiUrl = 'https://doctordv-backend-latest.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 

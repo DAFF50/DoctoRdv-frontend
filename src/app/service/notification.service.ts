@@ -9,7 +9,7 @@ export class NotificationService {
 
   constructor(private httpClient: HttpClient) { }
 
-  URL = "https://ton-service.onrender.com/api/";
+  URL = "https://doctordv-backend-latest.onrender.com/api/";
 
   getAllNotifications() {
     return this.httpClient.get<Notifications[]>(this.URL+"notifications");

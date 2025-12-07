@@ -9,9 +9,10 @@ export class DocumentMedicalService {
 
   constructor(private httpClient: HttpClient) { }
 
-  private apiUrl = 'https://ton-service.onrender.com/api/';
+  private apiUrl = 'https://doctordv-backend-latest.onrender.com/api/';
 
   save(data: FormData, id: number) {
     return this.httpClient.post(this.apiUrl+"document-medicaux/"+id, data);
   }
 }
+
