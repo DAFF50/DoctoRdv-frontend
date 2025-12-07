@@ -10,7 +10,7 @@ import {RendezVous} from "../models/rendez-vous";
 })
 export class DossierMedicalService {
 
-  private apiUrl = 'http://localhost:8000/api/';
+  private apiUrl = 'https://ton-service.onrender.com/api/';
 
   constructor(private httpClient: HttpClient) {
   }

@@ -7,7 +7,7 @@ import {Specialite} from "../models/specialite";
 })
 export class SpecialiteService {
 
-  URL = "http://127.0.0.1:8000/api/specialites/";
+  URL = "https://ton-service.onrender.com/api/specialites/";
 
   constructor(private httpClient: HttpClient) {
   }

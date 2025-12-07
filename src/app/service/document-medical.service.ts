@@ -9,7 +9,7 @@ export class DocumentMedicalService {
 
   constructor(private httpClient: HttpClient) { }
 
-  private apiUrl = 'http://localhost:8000/api/';
+  private apiUrl = 'https://ton-service.onrender.com/api/';
 
   save(data: FormData, id: number) {
     return this.httpClient.post(this.apiUrl+"document-medicaux/"+id, data);
