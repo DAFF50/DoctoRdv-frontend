@@ -7,7 +7,7 @@ import {Specialite} from "../models/specialite";
 })
 export class SpecialiteService {
 
-  URL = "https://doctordv-backend-latest.onrender.com/specialites/";
+  URL = "https://doctordv-backend-latest.onrender.com/api/specialites/";
 
   constructor(private httpClient: HttpClient) {
   }

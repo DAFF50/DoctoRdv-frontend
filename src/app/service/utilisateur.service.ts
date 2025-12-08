@@ -14,7 +14,7 @@ export class UtilisateurService {
 
   }
 
-  URL = "https://doctordv-backend-latest.onrender.com/";
+  URL = "https://doctordv-backend-latest.onrender.com/api/";
 
 
   getAllUtilisateurs() {
