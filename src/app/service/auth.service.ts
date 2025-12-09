@@ -54,7 +54,7 @@ export class AuthService {
     }
 
     // 2️⃣ Sinon, on tente d'appeler l'API
-    this.http.post(`${this.URL}/logout`, {}).subscribe({
+    this.http.post(`${this.URL}logout`, {}).subscribe({
       next: () => this.clearSession(),
       error: (error) => {
         console.warn('Erreur pendant la déconnexion :', error);
@@ -128,7 +128,7 @@ export class AuthService {
   }
 
   me(): Observable<Utilisateur> {
-    return this.http.get<Utilisateur>(`${this.URL}/me`)
+    return this.http.get<Utilisateur>(`${this.URL}me`)
       .pipe(
         tap((user: Utilisateur) => {
           // Mettre à jour les infos de l'utilisateur
