@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Utilisateur} from "../models/utilisateur";
 import {PasswordChange} from "../models/password-change";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class UtilisateurService {
 
   }
 
-  URL = "https://doctordv-backend-latest.onrender.com/api/";
+  URL = environment.apiUrl;
 
 
   getAllUtilisateurs() {

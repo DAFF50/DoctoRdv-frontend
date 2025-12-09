@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Observable, tap} from "rxjs";
 import {Utilisateur} from "../models/utilisateur";
+import {environment} from "../../environments/environment";
 
 
 // 📦 Interface pour typer les données
@@ -18,8 +19,7 @@ interface LoginResponse {
 })
 export class AuthService {
 
-  // 🌐 URL de l'API Laravel
-  private apiUrl = 'https://doctordv-backend-latest.onrender.com/api';
+  URL = environment.apiUrl;
 
   constructor(
     private http: HttpClient,
@@ -28,7 +28,7 @@ export class AuthService {
 
   // 🔐 MÉTHODE 1 : CONNEXION
   login(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password })
+    return this.http.post<LoginResponse>(`${this.URL}login`, { email, password })
       .pipe(
         tap((response: LoginResponse) => {
           localStorage.setItem('token', response.access_token);
@@ -54,7 +54,7 @@ export class AuthService {
     }
 
     // 2️⃣ Sinon, on tente d'appeler l'API
-    this.http.post(`${this.apiUrl}/logout`, {}).subscribe({
+    this.http.post(`${this.URL}/logout`, {}).subscribe({
       next: () => this.clearSession(),
       error: (error) => {
         console.warn('Erreur pendant la déconnexion :', error);
@@ -128,7 +128,7 @@ export class AuthService {
   }
 
   me(): Observable<Utilisateur> {
-    return this.http.get<Utilisateur>(`${this.apiUrl}/me`)
+    return this.http.get<Utilisateur>(`${this.URL}/me`)
       .pipe(
         tap((user: Utilisateur) => {
           // Mettre à jour les infos de l'utilisateur

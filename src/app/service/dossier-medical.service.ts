@@ -4,31 +4,32 @@ import {DossierMedical} from "../models/dossier-medical";
 import {Utilisateur} from "../models/utilisateur";
 import {Observable} from "rxjs";
 import {RendezVous} from "../models/rendez-vous";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DossierMedicalService {
 
-  private apiUrl = 'https://doctordv-backend-latest.onrender.com/api/';
+  URL = environment.apiUrl;
 
   constructor(private httpClient: HttpClient) {
   }
 
   getMedecinPatients(): Observable<Utilisateur[]> {
-    return this.httpClient.get<Utilisateur[]>(this.apiUrl+"medecin/patients");
+    return this.httpClient.get<Utilisateur[]>(this.URL+"medecin/patients");
   }
 
   save(data: DossierMedical) {
-    return this.httpClient.post(this.apiUrl+"dossier-medicaux", data);
+    return this.httpClient.post(this.URL+"dossier-medicaux", data);
   }
 
   getAllDossierMedicals(): Observable<DossierMedical[]> {
-    return this.httpClient.get<DossierMedical[]>(this.apiUrl+"dossier-medicaux");
+    return this.httpClient.get<DossierMedical[]>(this.URL+"dossier-medicaux");
   }
 
   getDossierMedicalById(id: number): Observable<DossierMedical> {
-    return this.httpClient.get<DossierMedical>(this.apiUrl + "dossier-medicaux/" + id);
+    return this.httpClient.get<DossierMedical>(this.URL + "dossier-medicaux/" + id);
   }
 
 }
