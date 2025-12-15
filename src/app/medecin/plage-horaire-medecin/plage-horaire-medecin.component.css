@@ -8,14 +8,14 @@
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 20px;
 }
 
 /* Header */
 .header {
   background: linear-gradient(135deg, #2196F3 0%, #2196F3 100%);
   color: white;
-  padding: 2.5rem;
+  padding: 2rem;
   border-radius: 16px;
   margin-bottom: 2rem;
   text-align: center;
