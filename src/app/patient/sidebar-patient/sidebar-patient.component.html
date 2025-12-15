@@ -4,7 +4,7 @@
     <header>
       <div class="image-text">
         <span class="image">
-          <!-- <img src="assets/images/DoctoRdv.png" alt=""> -->
+          <i class='bx bx-plus-medical'></i>
         </span>
         <div class="text logo-text">
           <span class="name">DoctoRdv</span>
@@ -22,63 +22,62 @@
         </li>
 
         <li class="nav-link">
-          <a routerLink="/patient/dashboard">
-            <i class='bx bx-home-alt icon'></i>
+          <a routerLink="/patient/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <i class='bx bx-grid-alt icon'></i>
             <span class="text nav-text">Tableau de bord</span>
           </a>
         </li>
 
         <li class="nav-link">
-          <a routerLink="/patient/rendez-vous">
+          <a routerLink="/patient/rendez-vous" routerLinkActive="active">
             <i class='bx bx-calendar-check icon'></i>
             <span class="text nav-text">Rendez-vous</span>
           </a>
         </li>
 
         <li class="nav-link">
-          <a routerLink="/patient/dossier-medical">
-            <i class='bx bx-folder icon'></i>
+          <a routerLink="/patient/dossier-medical" routerLinkActive="active">
+            <i class='bx bx-folder-plus icon'></i>
             <span class="text nav-text">Dossier médical</span>
           </a>
         </li>
 
         <li class="nav-link">
-          <a routerLink="">
-            <i class='bx bx-bell icon'></i>
+          <a routerLink="/patient/paiements" routerLinkActive="active">
+            <i class='bx bx-wallet icon'></i>
             <span class="text nav-text">Mes paiements</span>
           </a>
         </li>
 
         <li class="nav-link">
-          <a routerLink="/patient/notifications">
+          <a routerLink="/patient/notifications" routerLinkActive="active">
             <i class='bx bx-bell icon'></i>
             <span class="text nav-text">Notifications</span>
           </a>
         </li>
 
         <li class="nav-link">
-          <a routerLink="/patient/chat-ia">
-            <i class='bx bx-chat icon'></i>
+          <a routerLink="/patient/chat-ia" routerLinkActive="active">
+            <i class='bx bx-message-rounded-dots icon'></i>
             <span class="text nav-text">Chatbot</span>
           </a>
         </li>
 
         <li class="nav-link">
-          <a routerLink="/patient/profil">
+          <a routerLink="/patient/profil" routerLinkActive="active">
             <i class='bx bx-user-circle icon'></i>
             <span class="text nav-text">Profil</span>
           </a>
         </li>
-      </div>
-
-      <div class="bottom-content">
-        <li>
+        <li class="nav-link">
           <a (click)="onLogout()">
             <i class='bx bx-log-out icon'></i>
             <span class="text nav-text">Se déconnecter</span>
           </a>
         </li>
+      </div>
 
+      <div class="bottom-content">
         <li class="mode">
           <div class="sun-moon">
             <i class='bx bx-moon icon moon'></i>

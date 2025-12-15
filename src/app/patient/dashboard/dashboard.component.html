@@ -3,17 +3,16 @@
   <div class="header">
     <div class="header-content">
       <h1>🏠 Tableau de Bord</h1>
-      <p>Vue d'ensemble de votre activité médicale</p>
+      <p class="ms-2">Vue d'ensemble de votre activité médicale</p>
     </div>
     <div class="header-info">
-      <span class="welcome-text">Bienvenue, <strong>Abdourahmane</strong></span>
-      <span class="current-date">📅 Lundi 20 Octobre 2025</span>
+      <span class="welcome-text">Bienvenue, <strong>{{ userConnected.prenom }} {{ userConnected.nom }}</strong></span>
+      <span class="current-date">{{ currentDate }}</span>
     </div>
   </div>
 
-  <!-- Statistiques Principales -->
+  <!-- Statistique Principales -->
   <div class="stats-section">
-    
     <div class="stats-grid">
 
       <!-- Rendez-vous -->
@@ -24,26 +23,26 @@
         </div>
         <div class="card-body">
           <div class="main-stat">
-            <span class="number">24</span>
+            <span class="number">{{ statsRdv.totalRdv }}</span>
             <span class="label">Total</span>
           </div>
           <div class="sub-stats">
             <div class="sub-stat">
-              <span class="sub-number">3</span>
+              <span class="sub-number">{{ statsRdv.totalRdvAVenir }}</span>
               <span class="sub-label">À venir</span>
             </div>
             <div class="sub-stat">
-              <span class="sub-number">18</span>
-              <span class="sub-label">Effectués</span>
+              <span class="sub-number">{{ statsRdv.totalRdvTermine }}</span>
+              <span class="sub-label">Terminés</span>
             </div>
             <div class="sub-stat">
-              <span class="sub-number">3</span>
+              <span class="sub-number">{{ statsRdv.totalRdvAnnule }}</span>
               <span class="sub-label">Annulés</span>
             </div>
           </div>
         </div>
         <div class="card-footer">
-          <a href="#" class="card-link">Voir tous les rendez-vous →</a>
+          <a routerLink="/patient/rendez-vous" class="card-link">Voir tous les rendez-vous →</a>
         </div>
       </div>
 
@@ -74,69 +73,43 @@
           </div>
         </div>
         <div class="card-footer">
-          <a href="#" class="card-link">Voir les paiements →</a>
+          <a routerLink="/patient/paiements" class="card-link">Voir les paiements →</a>
         </div>
       </div>
 
       <!-- Dossiers Médicaux -->
       <div class="stat-card purple">
         <div class="card-header">
-          <div class="icon-box">📋</div>
+          <div class="icon-box">📂</div>
           <h3>Dossiers Médicaux</h3>
         </div>
         <div class="card-body">
           <div class="main-stat">
-            <span class="number">42</span>
-            <span class="label">Documents</span>
+            <span class="number">{{ statsDossierMedicaux.totalDossierMedical }}</span>
+            <span class="label">Total Dossiers</span>
+          </div>
+          <div class="main-stat secondary">
+            <span class="number">{{ statsDossierMedicaux.totalDocument }}</span>
+            <span class="label">Total Documents</span>
           </div>
           <div class="sub-stats">
             <div class="sub-stat">
-              <span class="sub-number">18</span>
+              <span class="sub-number">{{ statsDossierMedicaux.totalOrdonnance }}</span>
               <span class="sub-label">Ordonnances</span>
             </div>
             <div class="sub-stat">
-              <span class="sub-number">15</span>
+              <span class="sub-number">{{ statsDossierMedicaux.totalAnalyse }}</span>
               <span class="sub-label">Analyses</span>
             </div>
             <div class="sub-stat">
-              <span class="sub-number">9</span>
+              <span class="sub-number">{{ statsDossierMedicaux.totalRadiographie }}</span>
               <span class="sub-label">Radiographies</span>
             </div>
           </div>
         </div>
+        <br>
         <div class="card-footer">
-          <a href="#" class="card-link">Voir les dossiers →</a>
-        </div>
-      </div>
-
-      <!-- Notifications -->
-      <div class="stat-card orange">
-        <div class="card-header">
-          <div class="icon-box">🔔</div>
-          <h3>Notifications</h3>
-        </div>
-        <div class="card-body">
-          <div class="main-stat">
-            <span class="number">15</span>
-            <span class="label">Messages</span>
-          </div>
-          <div class="sub-stats">
-            <div class="sub-stat">
-              <span class="sub-number">8</span>
-              <span class="sub-label">Non lues</span>
-            </div>
-            <div class="sub-stat">
-              <span class="sub-number">5</span>
-              <span class="sub-label">Rappels</span>
-            </div>
-            <div class="sub-stat">
-              <span class="sub-number">2</span>
-              <span class="sub-label">Urgentes</span>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <a href="#" class="card-link">Voir les notifications →</a>
+          <a routerLink="/patient/dossier-medical" class="card-link">Voir les dossiers →</a>
         </div>
       </div>
 
@@ -144,23 +117,22 @@
   </div>
 
   <!-- Prochain Rendez-vous -->
-  <div class="next-appointment-section">
+  <div class="next-appointment-section" *ngIf="prochainRdv">
     <h2 class="section-title">⏰ Prochain Rendez-vous</h2>
-
     <div class="appointment-card">
       <div class="appointment-date">
         <div class="date-box">
-          <span class="day">15</span>
-          <span class="month">NOV</span>
+          <span class="day">{{getRdvDay(prochainRdv.dateRdv)}}</span>
+          <span class="month">{{getRdvMonth(prochainRdv.dateRdv)}}</span>
         </div>
       </div>
       <div class="appointment-info">
-        <h3>Dr. Mamadou Diallo</h3>
-        <p class="specialty">🩺 Médecin Généraliste</p>
+        <h3>Dr. {{prochainRdv.medecin?.prenom}} {{prochainRdv.medecin?.nom}}</h3>
+        <p class="specialty">🩺 {{prochainRdv.medecin?.specialite?.libelle}}</p>
         <div class="appointment-details">
-          <span class="detail-item">📅 Vendredi 15 Novembre 2025</span>
-          <span class="detail-item">🕐 14:30</span>
-          <span class="detail-item">📍 Cabinet Médical Dakar</span>
+          <span class="detail-item">📅 {{ getRdvFormattedDate(prochainRdv.dateRdv) }}</span>
+          <span class="detail-item">🕐 {{ getRdvFormattedTime(prochainRdv.heure) }}</span>
+          <span class="detail-item">📍 Clinique DoctoRdv Dakar</span>
         </div>
         <div class="appointment-status">
           <span class="status-badge confirmed">✓ Confirmé</span>
@@ -169,7 +141,7 @@
       </div>
       <div class="appointment-actions">
         <button class="action-btn primary">📄 Voir détails</button>
-        <button class="action-btn secondary">📞 Appeler</button>
+        <button class="action-btn secondary">💳 Payer en ligne</button>
         <button class="action-btn danger">❌ Annuler</button>
       </div>
     </div>
@@ -178,43 +150,38 @@
   <!-- Activité Récente -->
   <div class="activity-section">
     <h2 class="section-title">📈 Activité Récente</h2>
-
     <div class="activity-grid">
 
       <!-- Graphique Rendez-vous par mois -->
       <div class="activity-card">
         <div class="activity-header">
           <h3>📊 Rendez-vous mensuels</h3>
-          <select class="period-select">
-            <option>6 derniers mois</option>
-            <option>12 derniers mois</option>
-            <option>Cette année</option>
-          </select>
+          <span>6 derniers mois</span>
         </div>
         <div class="chart-placeholder">
           <div class="chart-bar" style="height: 60%">
-            <span class="bar-label">Mai</span>
             <span class="bar-value">3</span>
+            <span class="bar-label">Mai</span>
           </div>
           <div class="chart-bar" style="height: 80%">
-            <span class="bar-label">Juin</span>
             <span class="bar-value">4</span>
+            <span class="bar-label">Juin</span>
           </div>
           <div class="chart-bar" style="height: 40%">
-            <span class="bar-label">Juil</span>
             <span class="bar-value">2</span>
+            <span class="bar-label">Juil</span>
           </div>
           <div class="chart-bar" style="height: 100%">
-            <span class="bar-label">Août</span>
             <span class="bar-value">5</span>
+            <span class="bar-label">Août</span>
           </div>
           <div class="chart-bar" style="height: 60%">
-            <span class="bar-label">Sept</span>
             <span class="bar-value">3</span>
+            <span class="bar-label">Sept</span>
           </div>
           <div class="chart-bar" style="height: 70%">
-            <span class="bar-label">Oct</span>
             <span class="bar-value">3</span>
+            <span class="bar-label">Oct</span>
           </div>
         </div>
       </div>
@@ -223,7 +190,7 @@
       <div class="activity-card">
         <div class="activity-header">
           <h3>💳 Dernières Transactions</h3>
-          <a href="#" class="view-all">Voir tout</a>
+          <a routerLink="/patient/paiements" class="view-all">Voir tout</a>
         </div>
         <div class="transactions-list">
           <div class="transaction-item">
@@ -253,38 +220,6 @@
         </div>
       </div>
 
-    </div>
-  </div>
-
-  <!-- Actions Rapides -->
-  <div class="quick-actions-section">
-    <h2 class="section-title">⚡ Actions Rapides</h2>
-
-    <div class="quick-actions-grid">
-      <button class="quick-action-btn">
-        <span class="qa-icon">📅</span>
-        <span class="qa-text">Prendre RDV</span>
-      </button>
-      <button class="quick-action-btn">
-        <span class="qa-icon">👨‍⚕️</span>
-        <span class="qa-text">Trouver un médecin</span>
-      </button>
-      <button class="quick-action-btn">
-        <span class="qa-icon">📋</span>
-        <span class="qa-text">Mes dossiers</span>
-      </button>
-      <button class="quick-action-btn">
-        <span class="qa-icon">💬</span>
-        <span class="qa-text">Chat IA</span>
-      </button>
-      <button class="quick-action-btn">
-        <span class="qa-icon">💳</span>
-        <span class="qa-text">Paiements</span>
-      </button>
-      <button class="quick-action-btn">
-        <span class="qa-icon">👤</span>
-        <span class="qa-text">Mon profil</span>
-      </button>
     </div>
   </div>
 

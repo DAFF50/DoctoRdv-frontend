@@ -40,6 +40,7 @@ import { DossierMedicalMedecinComponent } from './medecin/dossier-medical-medeci
 import { NotificationMedecinComponent } from './medecin/notification-medecin/notification-medecin.component';
 import { DocumentPatientComponent } from './patient/document-patient/document-patient.component';
 import { DocumentMedecinComponent } from './medecin/document-medecin/document-medecin.component';
+import { PaiementsPatientComponent } from './patient/paiements-patient/paiements-patient.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { DocumentMedecinComponent } from './medecin/document-medecin/document-me
     NotificationMedecinComponent,
     DocumentPatientComponent,
     DocumentMedecinComponent,
+    PaiementsPatientComponent,
   ],
     imports: [
         BrowserModule,

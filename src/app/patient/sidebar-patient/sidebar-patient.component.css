@@ -63,6 +63,7 @@
 .sidebar header .image-text {
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
 .sidebar header .logo-text {
@@ -72,9 +73,9 @@
 
 header .image-text .name {
   margin-top: 2px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 900;
-  color: #2196F3; /* Bleu pour le nom */
+  color: #2196F3;
 }
 
 header .image-text .profession {
@@ -87,6 +88,13 @@ header .image-text .profession {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 50px;
+  height: 50px;
+}
+
+.sidebar header .image i {
+  font-size: 40px;
+  color: #2196F3;
 }
 
 .sidebar header .image img {
@@ -94,7 +102,7 @@ header .image-text .profession {
   border-radius: 6px;
 }
 
-/* Flèche d'étirement en BLEU */
+/* Flèche */
 .sidebar header .toggle {
   position: absolute;
   top: 50%;
@@ -102,7 +110,7 @@ header .image-text .profession {
   transform: translateY(-50%) rotate(180deg);
   height: 25px;
   width: 25px;
-  background-color: #2196F3; /* BLEU */
+  background-color: #2196F3;
   color: var(--sidebar-color);
   border-radius: 50%;
   display: flex;
@@ -114,7 +122,7 @@ header .image-text .profession {
 }
 
 .sidebar header .toggle:hover {
-  background-color: #1976D2; /* Bleu plus foncé au hover */
+  background-color: #1976D2;
 }
 
 body.dark .sidebar header .toggle {
@@ -126,7 +134,7 @@ body.dark .sidebar header .toggle {
 }
 
 .sidebar .menu {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .sidebar li.search-box {
@@ -162,36 +170,67 @@ body.dark .sidebar header .toggle {
   cursor: pointer;
 }
 
-/* Hover en BLEU */
-.sidebar li a:hover {
-  background-color: #2196F3; /* BLEU */
+/* ================================
+   SYSTÈME DE HOVER INTELLIGENT
+   ================================ */
+
+/* Par défaut, les liens actifs sont bleus */
+.sidebar .nav-link a.active {
+  background-color: #2196F3;
 }
 
-.sidebar li a:hover .icon,
-.sidebar li a:hover .text {
+.sidebar .nav-link a.active .icon,
+.sidebar .nav-link a.active .text {
   color: #ffffff;
 }
 
-/* État ACTIF (classe active) */
-.sidebar li a.active {
-  background-color: #2196F3; /* BLEU pour l'élément actif */
+/* Quand on hover dans le menu, on retire le bleu de l'actif (sauf si c'est lui qu'on survole) */
+.sidebar .menu:hover .nav-link a.active:not(:hover) {
+  background-color: transparent;
 }
 
-.sidebar li a.active .icon,
-.sidebar li a.active .text {
+.sidebar .menu:hover .nav-link a.active:not(:hover) .icon,
+.sidebar .menu:hover .nav-link a.active:not(:hover) .text {
+  color: var(--text-color);
+}
+
+/* Quand on hover dans bottom-content, on retire aussi le bleu de l'actif dans le menu */
+.sidebar .bottom-content:hover ~ .menu .nav-link a.active {
+  background-color: transparent;
+}
+
+.sidebar .bottom-content:hover ~ .menu .nav-link a.active .icon,
+.sidebar .bottom-content:hover ~ .menu .nav-link a.active .text {
+  color: var(--text-color);
+}
+
+/* Le hover ajoute le bleu sur n'importe quel lien */
+.sidebar .nav-link a:hover,
+.sidebar .bottom-content li a:hover {
+  background-color: #2196F3;
+}
+
+.sidebar .nav-link a:hover .icon,
+.sidebar .nav-link a:hover .text,
+.sidebar .bottom-content li a:hover .icon,
+.sidebar .bottom-content li a:hover .text {
   color: #ffffff;
 }
 
-body.dark .sidebar li a:hover .icon,
-body.dark .sidebar li a:hover .text {
-  color: var(--text-color);
+/* Mode sombre */
+body.dark .sidebar .nav-link a.active .icon,
+body.dark .sidebar .nav-link a.active .text {
+  color: #ffffff;
 }
 
-body.dark .sidebar li a.active .icon,
-body.dark .sidebar li a.active .text {
-  color: var(--text-color);
+body.dark .sidebar .nav-link a:hover .icon,
+body.dark .sidebar .nav-link a:hover .text,
+body.dark .sidebar .bottom-content li a:hover .icon,
+body.dark .sidebar .bottom-content li a:hover .text {
+  color: #ffffff;
 }
 
+/* ===== Scroll menu ===== */
 .sidebar .menu-bar {
   height: calc(100% - 55px);
   display: flex;
@@ -311,4 +350,27 @@ body.dark .main-content .text {
 .text {
   color: var(--text2-color);
   transition: var(--tran-05);
+}
+
+
+/* === Fix 2 : rendant la zone scrollable plus intuitive === */
+.sidebar .menu {
+  overflow-y: auto;
+  overflow-x: hidden; /* <-- empêche le scroll horizontal */
+  max-height: calc(100vh - 180px);
+  padding-right: 5px;
+}
+
+/* Masquer barre scroll disgracieuse */
+.sidebar .menu::-webkit-scrollbar {
+  width: 3px;
+}
+
+.sidebar .menu::-webkit-scrollbar-thumb {
+  background: rgba(89, 89, 89, 0.2);
+  border-radius: 10px;
+}
+
+.sidebar .menu::-webkit-scrollbar-track {
+  background: transparent;
 }

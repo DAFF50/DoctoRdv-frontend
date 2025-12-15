@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Utilisateur} from "../models/utilisateur";
 import {PasswordChange} from "../models/password-change";
 import {environment} from "../../environments/environment";
+import {Statistique} from "../models/statistique";
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class UtilisateurService {
 
   getAllUtilisateurs() {
     return this.httpClient.get<Utilisateur[]>(this.URL+"utilisateurs");
+  }
+
+  getStatsPatient() {
+    return this.httpClient.get<Statistique>(this.URL+"patients/me/statistiques");
   }
 
   getAllMedecins() {

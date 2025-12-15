@@ -34,6 +34,7 @@ import {DossierMedicalMedecinComponent} from "./medecin/dossier-medical-medecin/
 import {NotificationMedecinComponent} from "./medecin/notification-medecin/notification-medecin.component";
 import {DocumentPatientComponent} from "./patient/document-patient/document-patient.component";
 import {DocumentMedecinComponent} from "./medecin/document-medecin/document-medecin.component";
+import {PaiementsPatientComponent} from "./patient/paiements-patient/paiements-patient.component";
 
 const routes: Routes = [
   {path: '', component: LandingComponent},
@@ -60,6 +61,7 @@ const routes: Routes = [
       {path: 'dashboard', component: DashboardComponent},
       {path: 'dossier-medical', component: DossierMedicalComponent},
       {path: 'document-patient/:id', component: DocumentPatientComponent},
+      {path: 'paiements', component: PaiementsPatientComponent},
       {path: '', component: DashboardComponent},
     ]
   },

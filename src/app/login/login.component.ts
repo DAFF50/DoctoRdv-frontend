@@ -50,7 +50,7 @@ export class LoginComponent {
         } else if (role === 'medecin') {
           this.router.navigate(['/medecin/dashboard']);
         } else if (role === 'patient') {
-          this.router.navigate(['/patient/rendez-vous']);
+          this.router.navigate(['/patient/dashboard']);
         }
       },
       error: (error) => {
